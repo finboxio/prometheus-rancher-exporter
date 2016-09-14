@@ -1,0 +1,25 @@
+version: "2"
+networks:
+  exporter-test-net:
+    driver: bridge
+  local-proxy:
+    external: true
+services:
+  exporter-test:
+    build:
+      context: .
+      args:
+        NODE_ENV: test
+        LR_NPM_TOKEN: $LR_NPM_TOKEN
+        STRICT_SSL: $NPM_STRICT_SSL
+        HTTP_PROXY: $NPM_HTTP_PROXY
+        HTTPS_PROXY: $NPM_HTTP_PROXY
+    networks:
+      - exporter-test-net
+      - local-proxy
+    volumes:
+      - ./app:/usr/src/app
+      - ./coverage:/usr/src/app/coverage
+    env_file:
+      - .env.test
+    command: [ "./node_modules/.bin/ava", "--watch" ]

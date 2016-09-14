@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "id": "1s1",
+      "name": "haproxy",
+      "state": "active",
+      "accountId": "1a5",
+      "environmentId": "1e1",
+      "healthState": "healthy"
+    },
+    {
+      "id": "1s35",
+      "name": "ranch-eye",
+      "state": "active",
+      "accountId": "1a5",
+      "environmentId": "1e18",
+      "healthState": null
+    },
+    {
+      "id": "1s36",
+      "name": "node-exporter",
+      "state": "inactive",
+      "accountId": "1a5",
+      "environmentId": "1e18",
+      "healthState": "unhealthy"
+    },
+    {
+      "id": "1s37",
+      "name": "cron-job",
+      "state": "active",
+      "accountId": "1a5",
+      "environmentId": "1e18",
+      "healthState": "started-once"
+    }
+  ]
+}

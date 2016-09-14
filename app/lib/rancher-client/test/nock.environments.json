@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "id": "1a5",
+      "name": "Default",
+      "state": "active",
+      "uuid": "adminProject"
+    },
+    {
+      "id": "1a6",
+      "name": "Dead",
+      "state": "inactive",
+      "uuid": "adminProject"
+    }
+  ]
+}

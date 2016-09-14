@@ -1,15 +1,27 @@
-FROM gliderlabs/alpine:3.3
-MAINTAINER infinityworksltd
+FROM mhart/alpine-node
 
-RUN apk-install nodejs
+ARG LR_NPM_TOKEN
+ARG NODE_ENV=production
+ARG STRICT_SSL=true
+RUN echo "registry=https://registry.npmjs.org/" > /root/.npmrc && \
+    echo "@lr:registry=http://npm.leveredreturns.com" >> /root/.npmrc && \
+    echo "//npm.leveredreturns.com/:_authToken=${LR_NPM_TOKEN}" >> /root/.npmrc && \
+    echo "progress=false" >> /root/.npmrc
 
-WORKDIR /app
+ENV NODE_ENV=$NODE_ENV
+ENV NODE_PATH=/usr/src/app/lib
 
-ADD app.js /app/
-ADD package.json /app/
-RUN npm install
+# Create the app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src
 
-ENV DEBUG re
-EXPOSE 9010
+# Install app
+COPY ./package.json /tmp/package.json
+RUN cd /tmp && npm --strict-ssl $STRICT_SSL install
+COPY app/ /usr/src/app/
 
-CMD ["npm", "start"]
+RUN ln -sf /tmp/node_modules /usr/src/node_modules
+RUN ln -sf /tmp/package.json /usr/src/package.json
+
+# Run
+CMD [ "node", "app/index.js" ]

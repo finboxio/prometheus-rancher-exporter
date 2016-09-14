@@ -1,0 +1,30 @@
+version: "2"
+networks:
+  exporter-net:
+    driver: bridge
+  local-proxy:
+    external:
+      name: local-proxy
+services:
+  exporter:
+    build:
+      context: .
+      args:
+        LR_NPM_TOKEN: $LR_NPM_TOKEN
+        STRICT_SSL: $NPM_STRICT_SSL
+        HTTP_PROXY: $NPM_HTTP_PROXY
+        HTTPS_PROXY: $NPM_HTTP_PROXY
+    networks:
+      - exporter-net
+      - local-proxy
+    restart: on-failure
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - 80
+    environment:
+      PORT: 80
+      VIRTUAL_HOST: pre.docker
+      DEBUG: prometheus:rancher*
+    env_file:
+      - .env.local

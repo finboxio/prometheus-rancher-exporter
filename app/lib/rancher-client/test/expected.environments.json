@@ -1,0 +1,14 @@
+[
+  {
+    "type": "RancherEnvironment",
+    "id": "1a5",
+    "name": "Default",
+    "healthy": 1
+  },
+  {
+    "type": "RancherEnvironment",
+    "id": "1a6",
+    "name": "Dead",
+    "healthy": 0
+  }
+]

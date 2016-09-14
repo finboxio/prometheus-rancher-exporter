@@ -1,0 +1,38 @@
+{
+  "data": [
+    {
+      "id": "1h20",
+      "name": null,
+      "accountId": "1a5",
+      "state": "active",
+      "agentState": "reconnecting",
+      "hostname": "dm-host-1",
+      "labels": {
+        "io.rancher.host.linux_kernel_version": "4.4",
+        "io.rancher.host.docker_version": "1.12"
+      },
+      "removed": null,
+      "transitioning": "no",
+      "transitioningMessage": null,
+      "transitioningProgress": null,
+      "uuid": "97eb46cd-0974-4247-bd33-41e9a5d90781"
+    },
+    {
+      "id": "1h21",
+      "name": null,
+      "accountId": "1a5",
+      "state": "active",
+      "agentState": null,
+      "hostname": "dm-host-2",
+      "labels": {
+        "io.rancher.host.linux_kernel_version": "4.4",
+        "io.rancher.host.docker_version": "1.12"
+      },
+      "removed": null,
+      "transitioning": "no",
+      "transitioningMessage": null,
+      "transitioningProgress": null,
+      "uuid": "97eb46cd-0974-4247-bd33-41e9a5d90782"
+    }
+  ]
+}

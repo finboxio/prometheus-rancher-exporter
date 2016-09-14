@@ -20,6 +20,47 @@ DOCKER_IMAGE := $(shell if [[ "$(DOCKER_REGISTRY)" ]]; then echo $(DOCKER_REGIST
 DOCKER_VERSION := $(shell echo "$(DOCKER_IMAGE):$(BUILD_VERSION)")
 DOCKER_LATEST := $(shell if [[ "$(VERSION_DIRTY)" -gt "0" ]] || [[ "$(GIT_DIRTY)" == "yes" ]]; then echo "$(DOCKER_IMAGE):dev"; else echo $(DOCKER_IMAGE):latest; fi)
 
+COMPOSE_FILES := $(shell ls docker-compose.* | xargs -n1 echo -f | xargs)
+
+DOCKER_BUILD_ARGS := $(shell echo "--build-arg LR_NPM_TOKEN=${LR_NPM_TOKEN}")
+DOCKER_BUILD_ARGS := $(shell if [[ "$(NPM_HTTP_PROXY)" ]]; then echo "$(DOCKER_BUILD_ARGS) --build-arg HTTP_PROXY=$(NPM_HTTP_PROXY) --build-arg HTTPS_PROXY=$(NPM_HTTP_PROXY)"; else echo "$(DOCKER_BUILD_ARGS)"; fi)
+DOCKER_BUILD_ARGS := $(shell if [[ "$(NPM_STRICT_SSL)" == "false" ]]; then echo "$(DOCKER_BUILD_ARGS) --build-arg STRICT_SSL=false"; else echo "$(DOCKER_BUILD_ARGS)"; fi)
+
+docker.dev:
+	@docker-compose-watch -f docker-compose.yml exporter
+
+docker.test:
+	@docker-compose -f docker-compose.test.yml up --build -d exporter-test
+	@docker-compose -f docker-compose.test.yml run --rm exporter-test npm test
+
+docker.ava:
+	@docker-compose -f docker-compose.test.yml up --build exporter-test
+
+docker.stop:
+	@docker-compose $(COMPOSE_FILES) stop
+
+docker.down:
+	@docker-compose $(COMPOSE_FILES) down
+
+docker.cleanup:
+	@docker-compose $(COMPOSE_FILES) down -v --remove-orphans
+
+docker.build:
+	@docker build $(DOCKER_BUILD_ARGS) -t $(DOCKER_VERSION) -t $(DOCKER_LATEST) .
+
+docker.push: docker.build
+	@docker push $(DOCKER_VERSION)
+	@docker push $(DOCKER_LATEST)
+
+dev:
+	@NODE_PATH=app/lib ./node_modules/.bin/node-dev app/index.js
+
+test:
+	@CONFIG=test npm test
+
+ava:
+	@CONFIG=test npm run watch
+
 info:
 	@echo "git branch:      $(GIT_BRANCH)"
 	@echo "git commit:      $(GIT_COMMIT)"
@@ -35,9 +76,5 @@ info:
 version:
 	@echo $(BUILD_VERSION) | tr -d '\r' | tr -d '\n' | tr -d ' '
 
-docker.build:
-	@docker build -t $(DOCKER_VERSION) -t $(DOCKER_LATEST) .
-
-docker.push: docker.build
-	@docker push $(DOCKER_VERSION)
-	@docker push $(DOCKER_LATEST)
+lint:
+	@npm run lint

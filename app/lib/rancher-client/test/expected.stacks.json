@@ -1,0 +1,23 @@
+[
+  {
+    "type": "RancherStack",
+    "id": "1e1",
+    "name": "lb",
+    "environment": "1a5",
+    "healthy": 1
+  },
+  {
+    "type": "RancherStack",
+    "id": "1e18",
+    "name": "prometheus",
+    "environment": "1a5",
+    "healthy": 0
+  },
+  {
+    "type": "RancherStack",
+    "id": "1e19",
+    "name": "grafana",
+    "environment": "1a5",
+    "healthy": 1
+  }
+]

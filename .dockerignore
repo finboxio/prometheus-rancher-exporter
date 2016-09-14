@@ -1,6 +1,11 @@
+.git
+.gitignore
+*.md
+Makefile
+LICENSE
+Dockerfile
 node_modules
 .env.*
-!.env.test
 .nyc_output/
 coverage
 npm-debug.log
