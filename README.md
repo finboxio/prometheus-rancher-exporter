@@ -1,6 +1,6 @@
 # prometheus-rancher-exporter
 
-Exposes the health of stacks/services and hosts from the Rancher API, to a Prometheus compatible endpoint. 
+Exposes the health of stacks/services and hosts from the Rancher API, to a Prometheus compatible endpoint.
 
 ## Description
 
@@ -11,50 +11,37 @@ The application, expects to get the following environment variables from the hos
 * CATTLE_SECRET_KEY
 * CATTLE_CONFIG_URL
 
-## Install and deploy
-
-Run manually from Docker Hub:
-```
-docker run -d --restart=always -p 9010:9010 infinityworks/prometheus-rancher-exporter
-```
-
-Build a docker image:
-```
-docker build -t <image-name> .
-docker run -d --restart=always -p 9010:9010 <image-name>
-```
-
-Running the node process:
-```
-DEBUG=re node app.js
-```
-
-## Docker compose
-
-```
-prometheus-rancher-exporter:
-    tty: true
-    stdin_open: true
-    labels:
-      io.rancher.container.create_agent: true
-      io.rancher.container.agent.role: environment
-    expose:
-      - 9010:9010
-    image: infinityworks/prometheus-rancher-exporter:latest
-```
-
 ## Metrics
 
-Metrics will be made available on port 9010 by default, or you can pass environment variable ```LISTEN_PORT``` to override this.
+Metrics will be made available on a random port by default, or you can pass environment variable ```PORT``` to override this.
 
 ```
-# HELP rancher_environment Value of 1 if all containers in a stack are active
-# TYPE rancher_environment gauge
-rancher_environment{name="test1"} 1
-rancher_environment{name="test2"} 0
-rancher_environment{name="load_test"} 1
-rancher_environment{name="preprod"} 1
+# HELP rancher_environment_health Value of 1 if the environment is healthy
+# TYPE rancher_environment_health gauge
+rancher_environment_health{environment="test1"} 1
+rancher_environment_health{environment="test2"} 0
+rancher_environment_health{environment="load_test"} 1
+rancher_environment_health{environment="preprod"} 1
 ```
 
-## Metadata
-[![](https://images.microbadger.com/badges/version/infinityworks/prometheus-rancher-exporter.svg)](http://microbadger.com/images/infinityworks/prometheus-rancher-exporter "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/infinityworks/prometheus-rancher-exporter.svg)](http://microbadger.com/images/infinityworks/prometheus-rancher-exporter "Get your own image badge on microbadger.com")
+```
+# HELP rancher_host_health Value of 1 if the host is active
+# TYPE rancher_host_health gauge
+rancher_host_health{environment="Default" host="host1"} 1
+rancher_host_health{environment="Default" host="host2"} 0
+```
+
+```
+# HELP rancher_stack_health Value of 1 if all containers in a stack are active
+# TYPE rancher_stack_health gauge
+rancher_stack_health{environment="Default" stack="stack1"} 1
+rancher_stack_health{environment="Default" stack="stack2"} 0
+```
+
+```
+# HELP rancher_service_health Value of 1 if all containers in a service are active
+# TYPE rancher_service_health gauge
+rancher_service_health{environment="Default" stack="stack1" service="service1"} 1
+rancher_service_health{environment="Default" stack="stack1" service="service2"} 0
+```
+
