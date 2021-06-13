@@ -21,12 +21,12 @@
   "dependencies": {
     "co": "4.6.0",
     "envvar": "1.1.0",
-    "object-assign": "4.1.0",
+    "object-assign": "4.1.1",
     "prom-client": "4.0.0",
-    "request": "2.74.0",
-    "request-promise": "4.1.1",
+    "request": "2.88.2",
+    "request-promise": "4.2.6",
     "rootenv": "0.0.2",
-    "yoo": "1.0.3"
+    "yoo": "1.8.6"
   },
   "ava": {
     "timeout": "5s",

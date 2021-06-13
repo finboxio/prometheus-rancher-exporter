@@ -19,7 +19,7 @@ var client_options = new RancherClientOptions({
 
 var client = new RancherClient(client_options)
 var exporter = new RancherExporter(client)
-var server = new RancherExporterServer(exporter)
+var server = new RancherExporterServer(exporter, client)
 
 // Yoo needs to be updated to to handle undefined/0 port
 // since newer versions of node don't accept undefined

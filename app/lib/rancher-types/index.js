@@ -39,6 +39,7 @@ exports.Service = function (service) {
 function ensure_property (prop, obj, def) {
   obj[prop] = obj[prop] || def
   if (obj[prop] === undefined) {
+    console.log(obj)
     throw new Errors.InvalidRancherTypePropertyError(obj, prop, obj[prop] || '<undefined>')
   }
 }

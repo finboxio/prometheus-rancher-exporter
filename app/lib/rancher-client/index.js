@@ -53,6 +53,11 @@ RancherClient.prototype.services = co.wrap(function * () {
   return res.data.filter(drop_purged).map(map_service)
 })
 
+RancherClient.prototype.graphiteUrl = co.wrap(function * () {
+  var host = yield this._request.get('/settings/graphite.host')
+  return `http://${host.value}:9108/metrics`
+})
+
 function drop_purged (obj) {
   return obj.state !== 'purged'
 }
@@ -80,7 +85,7 @@ function map_environment (env) {
 function map_stack (stack) {
   debug('stack %s environment=%s healthState=%s state=%s', stack.name, stack.accountId, stack.state, stack.healthState)
   return new RancherTypes.Stack({
-    id: stack.id,
+    id: stack.id.replace('e', 'st'),
     name: stack.name,
     environment: stack.accountId,
     healthy: (stack.state === 'active' && (!stack.healthState || stack.healthState === 'healthy')) ? 1 : 0
@@ -93,7 +98,7 @@ function map_service (service) {
     id: service.id,
     name: service.name,
     environment: service.accountId,
-    stack: service.environmentId,
+    stack: service.stackId,
     healthy: (service.state === 'active' && (!service.healthState || service.healthState === 'healthy' || service.healthState === 'started-once')) ? 1 : 0
   })
 }
